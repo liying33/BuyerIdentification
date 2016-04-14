@@ -18,9 +18,10 @@ var oList = new sap.m.List({
 });
 
 var oButton1 = new sap.m.Button({
-	text : "Add Condition",
+	//text : "Add Condition",
 	style : sap.m.ButtonType.Emphasized,
-	press : addOneCondition
+	press : addOneCondition,
+	icon : "sap-icon://add"
 });
 
 oButton1.addStyleClass("addButton");
@@ -28,6 +29,7 @@ oButton1.addStyleClass("addButton");
 var oButton2 = new sap.m.Button({
 	text : "Submit",
 	style : sap.m.ButtonType.Emphasized,
+	press : sendCombinedQuery
 });
 
 function addOneCondition() {
@@ -41,26 +43,27 @@ function addOneCondition() {
 	var oSelect1 = new sap.m.Select({
 		name : "select-property"
 	});
-	
-	
-	var oItemSelectTemplate = new sap.ui.core.Item({  
-        text : "{propertyName}"  
-    });
+
+	var oItemSelectTemplate = new sap.ui.core.Item({
+		text : "{propertyName}"
+	});
 	oSelect1.setModel(propertyModel);
 	oSelect1.bindItems("/", oItemSelectTemplate);
-	
+
 	oSelect1.addStyleClass("selectProperty");
 
 	var oSelect2 = new sap.m.Select({
 		name : "select-criteria",
 		items : [ new sap.ui.core.Item({
-			text : "="
+			text : "equals"
 		}), new sap.ui.core.Item({
 			text : "starts with"
 		}), new sap.ui.core.Item({
 			text : "ends with"
-		}), , new sap.ui.core.Item({
+		}), new sap.ui.core.Item({
 			text : "contains"
+		}), new sap.ui.core.Item({
+			text : "fuzzy"
 		}) ]
 	});
 
@@ -75,6 +78,13 @@ function addOneCondition() {
 		content : oLayout1
 	});
 	oList.addItem(oCustomItem);
+}
+
+function sendCombinedQuery() {
+	 var items = oList.getItems();
+	   
+	sap.m.MessageToast.show(items.length);
+
 }
 
 var panel1 = new sap.m.Panel({
