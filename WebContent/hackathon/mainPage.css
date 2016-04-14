@@ -1,0 +1,23 @@
+.selectProperty{
+	width: 60% !important;
+}
+
+.panel{
+	text-align: center;
+}
+
+.addButton{
+	margin-right: 3rem;
+}
+
+.sapMBtn{
+	width:8rem;
+}
+
+.sapMIBar{
+	height: 60px;
+}
+
+#BarTitle{
+	font-size: 2rem;
+}
