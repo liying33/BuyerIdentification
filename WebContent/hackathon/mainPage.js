@@ -81,7 +81,14 @@ function addOneCondition() {
 }
 
 function sendCombinedQuery() {
-	var queryString = "{\"query\":{\"bool\":{\"must\":[";
+	var query = {
+			query:{
+				bool:{
+					must:[]
+				}
+			}
+	};
+	
 	var items = oList.getItems();
 	var hasNormalQuery = false;
 	var normalQueryString = "";
@@ -94,8 +101,9 @@ function sendCombinedQuery() {
 				.getContent()[0]._lastValue;
 		
 		if (criteria == "fuzzy") {
-			queryString = queryString + "{\"fuzzy\":{\"" + propertyName
-					+ "\":\"" + value + "\"}},";
+			var fuzzy = {};
+			fuzzy[propertyName] = value;
+			query.query.bool.must.push({fuzzy:fuzzy});
 		} else {
 			hasNormalQuery = true;
 			normalQueryString = normalQueryString + propertyName + ":" + value
@@ -103,13 +111,11 @@ function sendCombinedQuery() {
 		}
 	}
 	if (hasNormalQuery) {
-		queryString = queryString + "{\"query_string\":{\"query\":\""
-				+ normalQueryString.substring(0, normalQueryString.length - 4) + "\"}}";
-	}else{
-		queryString = queryString.substring(0, queryString.length - 1);
+		query.query.bool.must.push({query_string:{
+			query:normalQueryString.substring(0, normalQueryString.length - 4)
+			}});
 	}
-	queryString = queryString + "]}}}";
-	sap.m.MessageToast.show(queryString);
+	sap.m.MessageToast.show(JSON.stringify(query));
 }
 
 var panel1 = new sap.m.Panel({
