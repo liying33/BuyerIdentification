@@ -94,8 +94,8 @@ function sendCombinedQuery() {
 				.getContent()[0]._lastValue;
 		
 		if (criteria == "fuzzy") {
-			queryString = queryString + "\"fuzzy\":{\"" + propertyName
-					+ "\":\"" + value + "\"},";
+			queryString = queryString + "{\"fuzzy\":{\"" + propertyName
+					+ "\":\"" + value + "\"}},";
 		} else {
 			hasNormalQuery = true;
 			normalQueryString = normalQueryString + propertyName + ":" + value
@@ -103,8 +103,10 @@ function sendCombinedQuery() {
 		}
 	}
 	if (hasNormalQuery) {
-		queryString = queryString + "\"query_string\":\""
-				+ normalQueryString.substring(0, normalQueryString.length - 4) + "\"";
+		queryString = queryString + "{\"query_string\":{\"query\":\""
+				+ normalQueryString.substring(0, normalQueryString.length - 4) + "\"}}";
+	}else{
+		queryString = queryString.substring(0, queryString.length - 1);
 	}
 	queryString = queryString + "]}}}";
 	sap.m.MessageToast.show(queryString);
