@@ -146,7 +146,7 @@ function sendCombinedQuery() {
 			alert("encounter error");
 		}
 	});
-	sap.m.MessageToast.show(JSON.stringify(query));
+	//sap.m.MessageToast.show(JSON.stringify(query));
 
 }
 
@@ -194,7 +194,7 @@ function sendEnterpriseSearchQuery() {
 			alert("encounter error");
 		}
 	});
-	sap.m.MessageToast.show(oInputString.getValue());
+	//sap.m.MessageToast.show(oInputString.getValue());
 }
 
 var panel2 = new sap.m.Panel({
@@ -218,7 +218,11 @@ var oTable = new sap.m.Table("table1", {
 		})
 	}), new sap.m.Column({
 		header : new sap.m.Label({
-			text : "Name"
+			text : "First Name"
+		})
+	}), new sap.m.Column({
+		header : new sap.m.Label({
+			text : "Last Name"
 		})
 	}), new sap.m.Column({
 		header : new sap.m.Label({
@@ -226,7 +230,15 @@ var oTable = new sap.m.Table("table1", {
 		})
 	}), new sap.m.Column({
 		header : new sap.m.Label({
-			text : "Phone"
+			text : "Mobile Number"
+		})
+	}), new sap.m.Column({
+		header : new sap.m.Label({
+			text : "Address"
+		})
+	}), new sap.m.Column({
+		header : new sap.m.Label({
+			text : "score"
 		})
 	}) ]
 });
@@ -238,11 +250,20 @@ var oTemplate = new sap.m.ColumnListItem({
 	}), new sap.m.Text({
 		text : "{_source/FIRSTNAME}",
 		wrapping : false
+	}), new sap.m.Text({
+		text : "{_source/LASTNAME}",
+		wrapping : false
 	}) ,new sap.m.Text({
 		text : "{_source/EMAIL}",
 		wrapping : false
 	}) ,new sap.m.Text({
 		text : "{_source/MOBILENUMBER}",
+		wrapping : false
+	}),new sap.m.Text({
+		text : "{_source/ADDRESS}",
+		wrapping : false
+	}),new sap.m.Text({
+		text : "{_score}",
 		wrapping : false
 	}) ]
 });
