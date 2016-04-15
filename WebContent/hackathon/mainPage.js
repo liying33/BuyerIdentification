@@ -120,7 +120,7 @@ function sendCombinedQuery() {
 				}
 			}
 			normalQueryString = normalQueryString + propertyName + ":"
-					+ parsevalue + " AND";
+					+ parsevalue + " AND ";
 
 		}
 	}
@@ -128,13 +128,13 @@ function sendCombinedQuery() {
 		query.query.bool.must.push({
 			query_string : {
 				query : normalQueryString.substring(0,
-						normalQueryString.length - 4)
+						normalQueryString.length - 5)
 			}
 		});
 	}
 	
 	$.ajax({
-		url:"http://10.58.9.51/_search?size=10",
+		url:"http://10.97.149.200:8001/_search?size=10",
 		data:JSON.stringify(query),
 		type:'POST',
 		crossDomain:true,
