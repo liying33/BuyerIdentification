@@ -80,9 +80,6 @@ function addOneCondition() {
 	oList.addItem(oCustomItem);
 }
 
-var oLabelTime = new sap.m.Label("labelTime",{
-	text:"80 ms"
-});
 
 function sendCombinedQuery() {
 	var query = {
@@ -236,6 +233,12 @@ sap.ui.getCore().setModel(resultModel);
 oTable.setModel(resultModel);
 oTable.bindItems("/hits/hits", oTemplate);
 
+var oLabelTime = new sap.m.Label("labelTime",{
+	text:"{/took}"
+});
+
+oLabelTime.setModel(resultModel);
+
 var panel3 = new sap.m.Panel({
 	width : "auto",
 	headerToolbar : new sap.m.Toolbar({
@@ -247,7 +250,9 @@ var panel3 = new sap.m.Panel({
 	}),
 	content : [ new sap.m.Label("labelId", {
 		text : "Execution Time: "
-	}), oTable ]
+	}), oLabelTime, new sap.m.Label({
+		text:"ms"
+	}),oTable ]
 });
 
 
