@@ -11,7 +11,7 @@
 	<!-- UI5 resource servlet used to handle application resources      -->
 	<!-- ============================================================== -->
 
-	<servlet>
+<!-- 	<servlet>
 		<servlet-name>import</servlet-name>
 		<servlet-class>com.sap.hackathon.ImportServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
@@ -20,7 +20,7 @@
 		<servlet-name>import</servlet-name>
 		<url-pattern>/import/*</url-pattern>
 	</servlet-mapping>
-	
+	 -->
 	<servlet>
 		<display-name>ResourceServlet</display-name>
 		<servlet-name>ResourceServlet</servlet-name>

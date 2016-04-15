@@ -80,6 +80,10 @@ function addOneCondition() {
 	oList.addItem(oCustomItem);
 }
 
+var oLabelTime = new sap.m.Label("labelTime",{
+	text:"80 ms"
+});
+
 function sendCombinedQuery() {
 	var query = {
 		query : {
@@ -131,7 +135,22 @@ function sendCombinedQuery() {
 			}
 		});
 	}
+	
+	$.ajax({
+		url:"http://10.58.9.51/_search?size=10",
+		data:JSON.stringify(query),
+		type:'POST',
+		crossDomain:true,
+		success: function(data){
+			resultModel.setData(data);
+			sap.m.MessageToast.show("Get response successfully")
+		},
+		error: function(ex){
+			alert("encounter error");
+		}
+	});
 	sap.m.MessageToast.show(JSON.stringify(query));
+
 }
 
 var panel1 = new sap.m.Panel({
@@ -195,6 +214,28 @@ var oTable = new sap.m.Table("table1", {
 	}) ]
 });
 
+var oTemplate = new sap.m.ColumnListItem({
+	cells : [ new sap.m.Text({
+		text : "{_source/ID}",
+		wrapping : false
+	}), new sap.m.Text({
+		text : "{_source/FIRSTNAME}",
+		wrapping : false
+	}) ,new sap.m.Text({
+		text : "{_source/EMAIL}",
+		wrapping : false
+	}) ,new sap.m.Text({
+		text : "{_source/MOBILENUMBER}",
+		wrapping : false
+	}) ]
+});
+
+var resultModel = new sap.ui.model.json.JSONModel();
+sap.ui.getCore().setModel(resultModel);
+
+oTable.setModel(resultModel);
+oTable.bindItems("/hits/hits", oTemplate);
+
 var panel3 = new sap.m.Panel({
 	width : "auto",
 	headerToolbar : new sap.m.Toolbar({
@@ -208,6 +249,10 @@ var panel3 = new sap.m.Panel({
 		text : "Execution Time: "
 	}), oTable ]
 });
+
+
+
+
 appStartPage.addContent(panel1).addContent(panel2).addContent(panel3);
 
 app.addPage(appStartPage);
