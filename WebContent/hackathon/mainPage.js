@@ -174,6 +174,26 @@ var oButton3 = new sap.m.Button({
 });
 
 function sendEnterpriseSearchQuery() {
+	var query = {
+		query : {
+			query_string : {
+				query : oInputString.getValue()
+			}
+		}
+	};
+	$.ajax({
+		url:"http://10.58.9.51/_search?size=10",
+		data:JSON.stringify(query),
+		type:'POST',
+		crossDomain:true,
+		success: function(data){
+			resultModel.setData(data);
+			sap.m.MessageToast.show("Get response successfully")
+		},
+		error: function(ex){
+			alert("encounter error");
+		}
+	});
 	sap.m.MessageToast.show(oInputString.getValue());
 }
 
