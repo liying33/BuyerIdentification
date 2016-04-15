@@ -82,13 +82,13 @@ function addOneCondition() {
 
 function sendCombinedQuery() {
 	var query = {
-			query:{
-				bool:{
-					must:[]
-				}
+		query : {
+			bool : {
+				must : []
 			}
+		}
 	};
-	
+
 	var items = oList.getItems();
 	var hasNormalQuery = false;
 	var normalQueryString = "";
@@ -99,21 +99,37 @@ function sendCombinedQuery() {
 				.getCells()[1].getContent()[0].getSelectedItem().getText();
 		var value = oList.getItems()[i].getContent()[0].getRows()[0].getCells()[2]
 				.getContent()[0]._lastValue;
-		
+
 		if (criteria == "fuzzy") {
 			var fuzzy = {};
 			fuzzy[propertyName] = value;
-			query.query.bool.must.push({fuzzy:fuzzy});
+			query.query.bool.must.push({
+				fuzzy : fuzzy
+			});
 		} else {
 			hasNormalQuery = true;
-			normalQueryString = normalQueryString + propertyName + ":" + value
-					+ " AND";
+			var parsevalue = value;
+			if (propertyName != "ADDRESS") {
+				if (criteria == "starts with") {
+					parsevalue = parsevalue + "*";
+				} else if (criteria == "ends with") {
+					parsevalue = "*" + parsevalue;
+				} else if (criteria == "contains") {
+					parsevalue = "*" + parsevalue + "*";
+				}
+			}
+			normalQueryString = normalQueryString + propertyName + ":"
+					+ parsevalue + " AND";
+
 		}
 	}
 	if (hasNormalQuery) {
-		query.query.bool.must.push({query_string:{
-			query:normalQueryString.substring(0, normalQueryString.length - 4)
-			}});
+		query.query.bool.must.push({
+			query_string : {
+				query : normalQueryString.substring(0,
+						normalQueryString.length - 4)
+			}
+		});
 	}
 	sap.m.MessageToast.show(JSON.stringify(query));
 }
