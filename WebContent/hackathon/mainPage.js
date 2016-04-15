@@ -120,6 +120,8 @@ function addOneCondition() {
 			text : "contains"
 		}), new sap.ui.core.Item({
 			text : "fuzzy"
+		}), new sap.ui.core.Item({
+			text : "missing"
 		}) ]
 	});
 
@@ -127,7 +129,7 @@ function addOneCondition() {
 
 	oLayout1.createRow(oSelect1, oSelect2, new sap.m.Input({
 		type : sap.m.InputType.Text,
-		value : "Value"
+		value : ""
 	}));
 
 	var oCustomItem = new sap.m.CustomListItem({
@@ -166,15 +168,17 @@ function sendCombinedQuery() {
 		} else {
 			hasNormalQuery = true;
 			var parsevalue = value;
-				if (criteria == "starts with") {
-					parsevalue = propertyName + ":" + parsevalue + "*";
-				} else if (criteria == "ends with") {
-					parsevalue = propertyName + ":*" + parsevalue;
-				} else if (criteria == "contains") {
-					parsevalue = propertyName + ":*" + parsevalue + "*";
-				} else {
-					parsevalue = propertyName + ".raw:\"" + parsevalue + "\"";
-				}
+			if(criteria == "missing") {
+				parsevalue = "_missing_:" + propertyName;
+			} else if (criteria == "starts with") {
+				parsevalue = propertyName + ":" + parsevalue + "*";
+			} else if (criteria == "ends with") {
+				parsevalue = propertyName + ":*" + parsevalue;
+			} else if (criteria == "contains") {
+				parsevalue = propertyName + ":*" + parsevalue + "*";
+			} else {
+				parsevalue = propertyName + ".raw:\"" + parsevalue + "\"";
+			}
 			normalQueryString = normalQueryString + parsevalue + " AND ";
 
 		}
@@ -219,7 +223,7 @@ panel1.addStyleClass("panel");
 
 var oInputString = new sap.m.Input({
 	type : sap.m.InputType.Text,
-	value : "Input String",
+	value : "",
 	width : "50%"
 });
 var oButton3 = new sap.m.Button({
