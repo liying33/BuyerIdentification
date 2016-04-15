@@ -18,7 +18,7 @@ var oList = new sap.m.List({
 });
 
 var oButton1 = new sap.m.Button({
-	//text : "Add Condition",
+	// text : "Add Condition",
 	style : sap.m.ButtonType.Emphasized,
 	press : addOneCondition,
 	icon : "sap-icon://add"
@@ -81,10 +81,33 @@ function addOneCondition() {
 }
 
 function sendCombinedQuery() {
-	 var items = oList.getItems();
-	   
-	sap.m.MessageToast.show(items.length);
-
+	var queryString = "{\"query\":{\"bool\":{\"must\":[";
+	var items = oList.getItems();
+	var hasNormalQuery = false;
+	var normalQueryString = "";
+	for (var i = 0; i < items.length; i++) {
+		var propertyName = oList.getItems()[i].getContent()[0].getRows()[0]
+				.getCells()[0].getContent()[0].getSelectedItem().getText();
+		var criteria = oList.getItems()[i].getContent()[0].getRows()[0]
+				.getCells()[1].getContent()[0].getSelectedItem().getText();
+		var value = oList.getItems()[i].getContent()[0].getRows()[0].getCells()[2]
+				.getContent()[0]._lastValue;
+		
+		if (criteria == "fuzzy") {
+			queryString = queryString + "\"fuzzy\":{\"" + propertyName
+					+ "\":\"" + value + "\"},";
+		} else {
+			hasNormalQuery = true;
+			normalQueryString = normalQueryString + propertyName + ":" + value
+					+ " AND";
+		}
+	}
+	if (hasNormalQuery) {
+		queryString = queryString + "\"query_string\":\""
+				+ normalQueryString.substring(0, normalQueryString.length - 4) + "\"";
+	}
+	queryString = queryString + "]}}}";
+	sap.m.MessageToast.show(queryString);
 }
 
 var panel1 = new sap.m.Panel({
@@ -99,10 +122,20 @@ var panel1 = new sap.m.Panel({
 });
 panel1.addStyleClass("panel");
 
+var oInputString = new sap.m.Input({
+	type : sap.m.InputType.Text,
+	value : "Input String",
+	width : "50%"
+});
 var oButton3 = new sap.m.Button({
 	text : "Submit",
 	style : sap.m.ButtonType.Emphasized,
+	press : sendEnterpriseSearchQuery
 });
+
+function sendEnterpriseSearchQuery() {
+	sap.m.MessageToast.show(oInputString.getValue());
+}
 
 var panel2 = new sap.m.Panel({
 	width : "auto",
@@ -110,14 +143,10 @@ var panel2 = new sap.m.Panel({
 		height : "3rem",
 		active : true,
 		content : new sap.m.Label({
-			text : "Fuzzy Search"
+			text : "Enterprise Search"
 		})
 	}),
-	content : [ new sap.m.Input({
-		type : sap.m.InputType.Text,
-		value : "Input String",
-		width : "50%"
-	}), oButton3 ]
+	content : [ oInputString, oButton3 ]
 });
 panel2.addStyleClass("panel");
 
