@@ -32,6 +32,8 @@ var oButton2 = new sap.m.Button({
 	press : sendCombinedQuery
 });
 
+oButton2.addStyleClass("addButton");
+
 var oButton3 = new sap.m.Button({
 	text : "Import",
 	style : sap.m.ButtonType.Emphasized,
