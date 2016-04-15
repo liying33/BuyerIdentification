@@ -32,6 +32,60 @@ var oButton2 = new sap.m.Button({
 	press : sendCombinedQuery
 });
 
+var oButton3 = new sap.m.Button({
+	text : "Import",
+	style : sap.m.ButtonType.Emphasized,
+	press : importData
+});
+
+function importData() {
+	propertyModel.setData([{
+		propertyName : "MOBILENUMBER"
+	}, {
+		propertyName : "FIRSTNAME"
+	}, {
+		propertyName : "LASTNAME"
+	}, {
+		propertyName : "ADDRESS"
+	}, {
+		propertyName : "POSTCODE"
+	}, {
+		propertyName : "AGEGROUP"
+	}, {
+		propertyName : "GENDER"
+	}, {
+		propertyName : "INCOMINGGROUP"
+	}, {
+		propertyName : "HOUSEOWNER"
+	}, {
+		propertyName : "PROFESSION"
+	}, {
+		propertyName : "COLLEAGEDEGREE"
+	}, {
+		propertyName : "MARRAGESTATUS"
+	}, {
+		propertyName : "HASCHILDREN"
+	}, {
+		propertyName : "DEAL_SEEKER"
+	}, {
+		propertyName : "APPLE_FAN"
+	}, {
+		propertyName : "OVERSEA_BUYER"
+	}, {
+		propertyName : "PREFEREDBRAND"
+	}, {
+		propertyName : "PAYMENTTYPE"
+	}, {
+		propertyName : "FAVIOURATE_CATEGORY"
+	}, {
+		propertyName : "FREQUENCETOBUY"
+	}, {
+		propertyName : "AVERAGESPEND"
+	}, {
+		propertyName : "WECHATID"
+	} ]);
+}
+
 function addOneCondition() {
 	var oLayout1 = new sap.ui.commons.layout.MatrixLayout({
 		layoutFixed : true,
@@ -110,17 +164,16 @@ function sendCombinedQuery() {
 		} else {
 			hasNormalQuery = true;
 			var parsevalue = value;
-			if (propertyName != "ADDRESS") {
 				if (criteria == "starts with") {
-					parsevalue = parsevalue + "*";
+					parsevalue = propertyName + ":" + parsevalue + "*";
 				} else if (criteria == "ends with") {
-					parsevalue = "*" + parsevalue;
+					parsevalue = propertyName + ":*" + parsevalue;
 				} else if (criteria == "contains") {
-					parsevalue = "*" + parsevalue + "*";
+					parsevalue = propertyName + ":*" + parsevalue + "*";
+				} else {
+					parsevalue = propertyName + ".raw:\"" + parsevalue + "\"";
 				}
-			}
-			normalQueryString = normalQueryString + propertyName + ":"
-					+ parsevalue + " AND ";
+			normalQueryString = normalQueryString + parsevalue + " AND ";
 
 		}
 	}
@@ -134,7 +187,7 @@ function sendCombinedQuery() {
 	}
 	
 	$.ajax({
-		url:"http://10.97.149.200:8001/_search?size=10",
+		url:"http://10.58.9.51/_search?size=10",
 		data:JSON.stringify(query),
 		type:'POST',
 		crossDomain:true,
@@ -158,7 +211,7 @@ var panel1 = new sap.m.Panel({
 			text : "Combined Search"
 		})
 	}),
-	content : [ oList, oButton1, oButton2 ]
+	content : [ oList, oButton1, oButton2, oButton3 ]
 });
 panel1.addStyleClass("panel");
 
