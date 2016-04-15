@@ -40,6 +40,8 @@ var oButton3 = new sap.m.Button({
 
 function importData() {
 	propertyModel.setData([{
+		propertyName : "EMAIL"
+	}, {
 		propertyName : "MOBILENUMBER"
 	}, {
 		propertyName : "FIRSTNAME"
